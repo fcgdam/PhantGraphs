@@ -1,0 +1,60 @@
+<div>
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<div class="container-fluid">
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Phant Servers</b></div>
+    <div class="panel-body">
+
+    <div class="col-md-6">
+        <div class="portal col">
+            <div class="item" ng-repeat="server in serversList track by $index" ng-click="setEditedServer(server)" ng-class="{'activeitem':isCurrentItem(server.rowid)}">
+                <div class="well">
+                    <button type="button" class="close" ng-click="deleteServer(server.rowid)">&times;</button>
+                    <b>Server name: </b>{{server.name}}<br></br>
+                    <b>Server Addr: </b>{{server.url}}    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div ng-if="!isEditing">
+            <h4>Create a New Server</h4>
+            <hr/>
+            <!-- CREATE ITEM FORM -->
+            <form name="createform" class="create-form" role="form" ng-submit="createServer(newServer)" novalidate>
+                <div class="form-group">
+                    <label>Server Name</label>
+                    <input type="text" class="form-control" ng-model="newServer.name" placeholder="Server name" required>
+                </div>
+                <div class="form-group">
+                    <label>Server Address</label>
+                    <input type="text" class="form-control" ng-model="newServer.url" placeholder="Enter url" required>
+                </div>
+                <button type="submit" class="btn btn-info btn-lg" ng-disabled="createform.$invalid">Create</button>
+            </form>
+        </div>
+        <div ng-if="isEditing">
+            <h4>Editing {{editedServer.name}}:</h4>
+            <hr/>
+            <!-- EDIT ITEM FORM -->
+            <form name="editform" class="edit-form" role="form" ng-submit="updateServer( editedServer)" novalidate>
+                <div class="form-group">
+                    <label>Server Name</label>
+                    <input type="text" class="form-control" ng-model="editedServer.name" placeholder="Server name" required>
+                </div>
+                <div class="form-group">
+                    <label>Server Address</label>
+                    <input type="text" class="form-control" ng-model="editedServer.url" placeholder="Enter url" required>
+                </div>
+                <button type="submit" class="btn btn-info btn-lg" ng-disabled="editform.$invalid">Save</button>
+                <button type="button" class="btn btn-default btn-lg pull-right" ng-click="cancelEditing()">Cancel</button>
+            </form>
+        <div>
+    </div>
+  </div>
+  
+</div>
+</div>

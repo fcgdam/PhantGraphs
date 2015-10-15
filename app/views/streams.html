@@ -1,0 +1,81 @@
+
+<div>
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<div class="container-fluid">
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Phant Streams</b></div>
+    <div class="panel-body">
+    <div class="col-md-6">
+        <div class="portal col">
+            <div class="item" ng-repeat="stream in streamsList track by $index" ng-click="setEditedStream(stream)" ng-class="{'activeitem':isCurrentItem(stream.rowid)}">
+                <div class="well">
+                    <button type="button" class="close" ng-click="deleteStream(stream.rowid)">&times;</button>
+                    <b>Stream name: </b>{{stream.name}}<br></br>
+                    <b>Stream key : </b>{{stream.key}} <br></br>
+                    <b>Server ID  : </b>{{serversList[stream.serverid-1].name}} <br></br>
+                    <span><b>Stream Fields: </b>
+                        <div style="display:inline-block;" ng-repeat="field in stream.fields track by $index">{{field}}&nbsp;</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div ng-if="!isEditing">
+            <h4>Create a New Stream</h4>
+            <hr/>
+            <!-- CREATE ITEM FORM -->
+            <form name="createform" class="create-form" role="form" ng-submit="createStream(newStream)" novalidate>
+                <div class="form-group">
+                    <label>Stream Name</label>
+                    <input type="text" class="form-control" ng-model="newStream.name" placeholder="Stream name" required>
+                </div>
+                <div class="form-group">
+                    <label>Stream Public Key</label>
+                    <input type="text" class="form-control" ng-model="newStream.key" placeholder="Enter public key" required>
+                </div>
+                <div class="form-group">
+                    <label>Phant Server</label>
+                    <select class="form-control" ng-model="newStream.serverid" required>
+                        <option ng-repeat="server in serversList track by $index" value="{{server.rowid}}">{{server.name}}</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-info btn-lg" ng-disabled="createform.$invalid">Create</button>
+            </form>
+        </div>
+        <div ng-if="isEditing">
+            <h4>Editing {{editedStream.name}}:</h4>
+            <hr/>
+            <!-- EDIT ITEM FORM -->
+            <form name="editform" class="edit-form" role="form" ng-submit="updateStream( editedStream)" novalidate>
+                <div class="form-group">
+                    <label>Stream Name</label>
+                    <input type="text" class="form-control" ng-model="editedStream.name" placeholder="Stream name">
+                </div>
+                <div class="form-group">
+                    <label>Stream Public Key</label>
+                    <input type="text" class="form-control" ng-model="editedStream.key" placeholder="Enter public key">
+                </div>
+                <div class="form-group">
+                    <label>Phant Server</label>
+                    <!--
+                    <select class="form-control" ng-model="editedStream.serverid" value="editedStream.serverid">
+                        <option ng-repeat="server in serversList track by server.rowid" value="{{server.rowid}}">{{server.name}}</option>
+                    </select>
+                    -->
+                    
+                    <select class="form-control" ng-model="editedStream.selectedServer" ng-options="server.name for server in serversList track by server.rowid">
+                    </select>
+                    
+                </div>
+                <button type="submit" class="btn btn-info btn-lg" ng-disabled="editform.$invalid">Save</button>
+                <button type="button" class="btn btn-default btn-lg pull-right" ng-click="cancelEditing()">Cancel</button>
+            </form>
+        <div>
+    </div>
+ </div>   
+</div>
+</div>

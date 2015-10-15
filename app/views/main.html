@@ -1,0 +1,66 @@
+<div>
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<div ng-repeat="graph in graphsList track by $index">
+    <div class="col-lg-6 col-sm-12" >
+        <div class="panel panel-default">
+            <div class="panel-heading" ng-if="graph.isLoading">{{graph.name}} <img src="img/preloading.gif" alt="loading..." width=32 height=32></div>
+            <div class="panel-heading" ng-if="!graph.isLoading">{{graph.name}}</div>
+            <div class="panel-body">
+                <!-- this is an hack, but it's way simpler this way... -->
+                <div ng-show="graph.charttype == 0" >
+                    <canvas id="graph{{graph.rowid}}" class="chart chart-line" chart-data="graph.data" chart-labels="graph.labels" chart-legend="true"
+                      chart-click="onClickGraph" chart-hover="onHover" chart-series="graph.series" chart-options="">
+                    </canvas>
+                </div>
+                
+                <div ng-show="graph.charttype == 1" >
+                    <canvas id="graph{{graph.rowid}}" class="chart chart-bar" chart-data="graph.data" chart-labels="graph.labels" chart-legend="true"
+                      chart-click="onClickGraph" chart-hover="onHover" chart-series="graph.series" chart-options="{animation:false}">
+                    </canvas>
+                </div>
+                
+                
+                <div ng-show="graph.charttype == 2" >
+                    <canvas id="graph{{graph.rowid}}" class="chart chart-doughnut" chart-data="graph.data" chart-labels="graph.labels" chart-legend="true"
+                      chart-click="onClickGraph" chart-hover="onHover" chart-series="graph.series" chart-options="">
+                    </canvas>
+                </div>
+                
+                <div ng-show="graph.charttype == 3" >
+                    <canvas id="graph{{graph.rowid}}" class="chart chart-radar" chart-data="graph.data" chart-labels="graph.labels" chart-legend="true"
+                      chart-click="onClickGraph" chart-hover="onHover" chart-series="graph.series" chart-options="{animation:false}">
+                    </canvas>
+                </div>                
+                
+                <div ng-show="graph.charttype == 4" >
+                    <canvas id="graph{{graph.rowid}}" class="chart chart-pie" chart-data="graph.data" chart-labels="graph.labels" chart-legend="true"
+                      chart-click="onClickGraph" chart-hover="onHover" chart-series="graph.series" chart-options="{animation:false}">
+                    </canvas>
+                </div>                  
+                
+                <div ng-show="graph.charttype == 5" >
+                    <canvas id="graph{{graph.rowid}}" class="chart chart-polar-area" chart-data="graph.data" chart-labels="graph.labels" chart-legend="true"
+                      chart-click="onClickGraph" chart-hover="onHover" chart-options="{animation:false}">
+                    </canvas>
+                </div>                  
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div  class="col-lg-6 col-sm-12">
+    <div class="panel panel-default">
+            <div class="panel-heading">Line Chart</div>
+            <div class="panel-body">
+              <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-legend="true"
+                      chart-click="onClick" chart-hover="onHover" chart-series="series" chart-options="{showXAxisLabel: false,showTooltips: false}"></canvas>
+            </div>
+    </div>  
+
+</div>
+-->

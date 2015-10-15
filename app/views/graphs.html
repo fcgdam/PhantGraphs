@@ -1,0 +1,134 @@
+<div>
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<div class="container-fluid">
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Graphing Streams</b></div>
+    <div class="panel-body">
+    <div class="col-md-6">
+        <div class="portal col">
+            <div class="item" ng-repeat="graph in graphsList track by $index" ng-click="setEditedGraph(graph)" ng-class="{'activeitem':isCurrentItem(graph.rowid)}">
+                <div class="well">
+                    <button type="button" class="close" ng-click="deleteGraph(graph.rowid)">&times;</button>
+                    <b>Graph name: </b>{{graph.name}} [{{graph.graphorder}}]<br></br>
+                    <b>Graph type: </b>{{charttypedesc[graph.charttype]}}<br></br>
+                    <b>Graph Server : </b>{{serversList[graph.serverid].name}} <br></br>
+                    <b>Graph Stream : </b>{{streamsList[graph.streamid-1].name}} <br></br>
+                    <b>Graph Fields : </b>{{graph.fields}}<br></br>
+                    <b>Graph Options: </b>{{graph.options}}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div ng-if="!isEditing">
+            <h4>Create a New Graph</h4>
+            <hr/>
+            <!-- CREATE ITEM FORM -->
+            <form name="createform" class="create-form" role="form" ng-submit="createGraph(newGraph)" novalidate>
+                <div class="form-group">
+                    <label>Graph Name</label>
+                    <input type="text" class="form-control" ng-model="newGraph.name" placeholder="Graph name" required>
+                </div>
+                <div class="container-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Stream Display Order</label>
+                            <input type="text" class="form-control" ng-model="newGraph.graphorder" placeholder="Enter order to display" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                            <label>Stream Graph Type</label>
+                            <select class="form-control" ng-model="newGraph.charttypedesc" ng-options="ct for ct in charttypedesc" required>
+                            </select>
+                                              
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Stream</label>
+                    <select class="form-control" ng-model="newGraph.selectedStream" ng-change="updateFields(newGraph)" ng-options="stream.name for stream in streamsList track by stream.rowid" required>
+                        <!-- <option ng-repeat="stream in streamsList track by $index" value="{{stream.rowid}}">{{stream.name}}</option> -->
+                    </select>
+                </div>                
+                <div class="form-group">
+                    <label>Stream Fields</label>
+                    <select class="form-control" multiple="true" ng-model="newGraph.fields" required>
+                        <option ng-repeat="field in streamListFields track by $index" value="{{field}}">{{field}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                            <label>Stream Graph Options</label>
+                            <select class="form-control" multiple ng-model="newGraph.graphoptions">
+                                <option value="1">No Animation</option>
+                                <option value="2">No X labels</option>
+                                <option value="3">Single Bars</option>
+                            </select>                
+                </div>
+                <div class="form-group">
+                    <label>Graph Options</label>
+                    <input type="text" class="form-control" ng-model="newGraph.options" placeholder="Graph options">
+                </div>
+                
+                <button type="submit" class="btn btn-info btn-lg" ng-disabled="createform.$invalid">Create</button>
+            </form>
+        </div>
+        <div ng-if="isEditing">
+            <h4>Editing {{editedGraph.name}}:</h4>
+            <hr/> 
+            <!-- EDIT ITEM FORM -->
+            <form name="editform" class="edit-form" role="form" ng-submit="updateGraph(editedGraph)" novalidate>
+                <div class="form-group">
+                    <label>Graph Name</label>
+                    <input type="text" class="form-control" ng-model="editedGraph.name" placeholder="Graph name" required>
+                </div>
+                <div class="container-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Stream Display Order</label>
+                            <input type="text" class="form-control" ng-model="editedGraph.graphorder" placeholder="Enter order to display" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                            <label>Stream Graph Type</label>
+                            <select class="form-control" ng-model="editedGraph.charttypedesc" ng-options="ct for ct in charttypedesc" required>
+                            </select>
+                                              
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Stream</label>
+                    <select class="form-control" ng-model="editedGraph.selectedStream" ng-change="updateFields(editedGraph)"  ng-options="stream.name for stream in streamsList track by stream.rowid"  required>
+                        <!-- <option ng-repeat="stream in streamsList track by $index" value="{{stream.rowid}}">{{stream.name}}</option> -->
+                    </select>
+                </div>                
+                <div class="form-group">
+                    <label>Stream Fields</label>
+                    <select class="form-control" multiple="true" ng-model="editedGraph.fields" required>
+                        <option ng-repeat="field in streamListFields track by $index" value="{{field}}">{{field}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                            <label>Stream Graph Options</label>
+                            <select class="form-control" multiple ng-model="editedGraph.graphoptions">
+                                <option value="1">No Animation</option>
+                                <option value="2">No X labels</option>
+                                <option value="3">Single Bars</option>
+                            </select>                
+                </div>                
+                <div class="form-group">
+                    <label>Graph Options</label>
+                    <input type="text" class="form-control" ng-model="editedGraph.options" placeholder="Graph options">
+                </div>
+                <button type="submit" class="btn btn-info btn-lg" ng-disabled="editform.$invalid">Save</button>
+                <button type="button" class="btn btn-default btn-lg pull-right" ng-click="cancelEditing()">Cancel</button>
+            </form>
+        <div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+

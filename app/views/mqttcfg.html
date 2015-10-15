@@ -1,0 +1,42 @@
+<div>
+    <h4>MQTT Configuration Settings</h4>
+    <hr/>
+
+<div>
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+    
+    <form name="mqttform" class="create-form" role="form" ng-submit="saveMQTTCfg()" novalidate>
+        <div class="well well-large">
+                <div class="form-group">
+                    <label>MQTT Broker Address:</label>
+                    <input type="text" class="form-control" ng-model="brokerAddress" placeholder="MQTT Broker IP or DNS name" required>
+                </div>
+                <div class="form-group">
+                    <label>MQTT WebSocket Listening Port</label>
+                    <input type="text" class="form-control" ng-model="brokerPort" placeholder="WebSocket Listening Port" required>
+                </div>
+        
+        
+            <div class="form-group">
+                <label>MQTT Topic:</label>
+                <input type="text" class="form-control" ng-model="newTopic" placeholder="MQTT Topic to subscribe...">
+                
+            </div>
+            <button class="btn btn-default" ng-click="addTopic()">Add Topic</button>
+            
+            <ul class="list-unstyled">
+                <li class="item" ng-repeat="topic in topics" id="topic">
+                    <div class="well">
+                        <button type="button" class="close" ng-click="deleteTopic($index)">&times;</button>
+                        <b>{{topic}}</b>
+                    </div>
+                </li>
+            </ul>
+          
+        </div>
+        <button type="submit" class="btn btn-info btn-lg" ng-disabled="mqttform.$invalid">Save</button>
+    </form>
+
+
+</div>

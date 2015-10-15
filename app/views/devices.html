@@ -1,0 +1,33 @@
+<div>
+    <h4>Devices</h4>
+    <hr/>
+    
+    <table class="table table-stripped table-hover">
+        <thead>
+            <tr>
+            <th>Status</th>
+            <th>Device ID</th>
+            <th>Device Name</th>
+            <th>Address</th>
+            <th>SSID</th>
+            <th>Last Seen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="device in devicesList track by $index" >
+                <td>
+                    <img src=img/ok.png ng-show="lastSeen(device.lastseen,15)"></img>
+                    <img src=img/warning.png ng-show="lastSeen(device.lastseen,30) && !lastSeen(device.lastseen,15) "></img>
+                    <img src=img/error.png ng-show="!lastSeen(device.lastseen,30)"></img>
+                </td>
+                <td><a href="#/device?deviceID={{device.deviceid}}">{{device.deviceid}}</td>
+                <td><a href="#/device?deviceID={{device.deviceid}}">{{device.name}}</td>
+                <td>{{device.ipaddr}}</td>
+                <td>{{device.ssid}}</td>
+                <td>{{device.lastseen}}</td>
+        
+            </tr>
+        </tbody>
+    </table>
+
+</div>

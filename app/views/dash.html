@@ -1,0 +1,60 @@
+<div>
+    <h4>Dashboard Settings</h4>
+    <hr/>
+
+    <div>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    </div>
+    
+    <form name="dashform" class="create-form" role="form" ng-submit="saveDashOptions(dash)" novalidate>
+        <div class="well well-large">
+        <div class="container-fluid">
+            <div class="form-group">
+            
+                <label for="refreshA" class="control-label">Disable automatic graphs refresh?</label>
+                <div class="controls">
+                    <input name="refreshA" type="checkbox" ng-model="dash.refresh" ng-false-value="'0'" ng-true-value="'1'">
+                </div>
+            </div>        
+        
+        
+            <div class="form-group">
+                <label for="errorthrottle" class="control-label">Throttle back on errors?</label>
+                <div class="controls">
+                    <input name="errorthrottle" type="checkbox" ng-model="dash.errorthrottle" ng-false-value="'0'" ng-true-value="'1'">
+                </div>
+            </div> 
+            
+            <div class="container-fluid">
+            <div class="col-md-6">
+            <div class="form-group">
+                <label>Refresh Period (mS):</label>
+                <input type="text" class="form-control" ng-model="dash.refreshp" placeholder="Refresh Period for graphs in the Dashboard" required>
+            </div>
+
+            <div class="form-group">
+                <label>Maximum Error Count:</label>
+                <input type="text" class="form-control" ng-model="dash.maxerror" placeholder="Maximum error count before stoping automatic refresh" required>
+            </div>      
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+                <label>Graphics/Charts datapoints:</label>
+                <input type="text" class="form-control" ng-model="dash.datapoints" placeholder="Number of Data Points for processing" required>
+            </div>             
+
+            <div class="form-group">
+                <label>Label Interval:</label>
+                <input type="text" class="form-control" ng-model="dash.labelinterval" placeholder="Interval of datapoints between X labels" required>
+            </div>              
+            </div>
+            </div>
+        
+        <!-- Fields a colocar: periodo de refresh, datapoints, numero de erros, intervalo entre labels. -->
+        
+        </div>
+        </div>
+        <button type="submit" class="btn btn-info btn-lg" ng-disabled="dashform.$invalid">Save</button>
+    </form>
+ 
+</div>

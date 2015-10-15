@@ -1,0 +1,74 @@
+<div>
+    <div class="contailer-fluid">
+        <div class="col-lg-6 col-sm-12" >
+            <div align="left">
+            <h4>Device: {{device.name}} ({{device.deviceid}})</h4>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-12" >
+            <div align="right">
+                <a ng-click="$back()" style="cursor: pointer;"><strong>Back</strong></a>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    
+    <form name="deviceform" class="create-form" role="form" ng-submit="saveDeviceCfg()" novalidate>
+        <div class="well well-large">
+            <div class="form-group">
+                <label>Device ID:</label>
+                <input type="text" class="form-control" ng-model="device.deviceid" placeholder="Device Auto Generated ID" disabled>
+            </div>
+            <div class="form-group">
+                <label>Device Name:</label>
+                <input type="text" class="form-control" ng-model="device.name" placeholder="Device Human Readable name" required>
+            </div>
+            
+            <div class="container-fluid">
+                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Last Seen at:</label>
+                        <input type="text" class="form-control" ng-model="device.lastseen" placeholder="Last Seen" disabled>    
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Device registered at:</label>
+                        <input type="text" class="form-control" ng-model="device.datec" placeholder="Date of registration" disabled>    
+                    </div>            
+                 </div>
+            </div>
+            <hr/>
+            <h4>Device configuration properties:</h4>
+            <br/>
+            <div class="container-fluid">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Configuration Property:</label>
+                        <input type="text" class="form-control" ng-model="newPropName" placeholder="Configuration Property Name">    
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Configuration Value:</label>
+                        <input type="text" class="form-control" ng-model="newPropValue" placeholder="Configuration Property Value">    
+                    </div>
+                </div>
+                <button class="btn btn-default" ng-click="addCfg(newPropName,newPropValue )">Add Property</button>
+            </div>
+            <hr/>
+            <ul class="list-unstyled">
+                <li class="item" ng-repeat="item in config">
+                    <div class="well" ng-repeat="(key,value) in item">
+                        <button type="button" class="close" ng-click="deleteCfg($index)">&times;</button>
+                        <b>{{key}} -> {{value}}</b>
+                    </div>
+                </li>
+            </ul>
+          
+        </div>
+        <button type="submit" class="btn btn-info btn-lg" ng-disabled="deviceform.$invalid">Save</button>
+    </form>
+    
+</div>
+

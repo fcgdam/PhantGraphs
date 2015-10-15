@@ -1,0 +1,94 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>phantGraph</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
+    <link rel="stylesheet" href="components/chart/angular-chart.css">
+    <link rel="components/ui/ui-grid-stable.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="components/jquery.min.js"></script>
+    <script src="components/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="components/bootstrap.min.css">
+  </head>
+
+  <body ng-app="phantGraph">
+    <!--[if lt IE 9]>
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a></p>
+    <![endif]-->
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#/home">PhantGraphs</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#/home"><home>Dashboard</home><span class="sr-only">(current)</span></a></li>
+        <li><a href="#/mqtt"><mqtt>MQTT</mqtt></a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Config<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#/servers"><server>Phant Servers</server></a></li>
+            <li><a href="#/streams"><streams>Phant Streams</streams></a></li>
+            <li><a href="#/graphs"><graphs>Phant Graphs</graphs></a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#/dashboard"><dash>Dashboard</dash></a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#/mqttcfg"><mqttsrv>MQTT Server</mqttsrv></a></li>
+            <!--<li><a href="#/mqtttopics"><topics>MQTT Topics</topics></a></li>-->
+            <li role="separator" class="divider"></li>
+            <li><a href="#/devices"><devices>Devices</devices></a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+    <div class="container" ng-view></div>
+
+    <script src="components/angular/angular.js"></script>
+    <script src="components/angular/angular-route.js"></script>
+    <script src="components/angular-bootstrap/ui-bootstrap-tpls-0.13.4.js"></script>
+    <script src="components/ui/ui-grid-stable.js"></script>
+    <script src="components/mqttws/mqttws31-min.js"></script>
+    <script src="components/chart/chart.js"></script>
+    <script src="components/chart/angular-chart.js"></script> 
+
+    <!-- build:js scripts/scripts.js -->
+    
+    <script src="scripts/app.js"></script>
+    <script src="scripts/restapi.js"></script>
+    <script src="scripts/phantapi.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/servers.js"></script>
+    <script src="scripts/controllers/streams.js"></script>
+    <script src="scripts/controllers/graphs.js"></script>
+    <script src="scripts/controllers/dash.js"></script>
+    <script src="scripts/controllers/exceptions.js"></script>
+    <script src="scripts/controllers/mqtt.js"></script>
+    <script src="scripts/controllers/mqttcfg.js"></script>
+    <script src="scripts/controllers/devices.js"></script>
+    <script src="scripts/controllers/device.js"></script>
+
+    <!-- endbuild -->
+  </body>
+</html>
