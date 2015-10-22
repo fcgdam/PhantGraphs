@@ -15,27 +15,32 @@ angular.module("phantGraph")
                type: "warning",
                 msg: error
             });
-            //$scope.$apply();
             // Let's avoid too much error messages:
             if ( $scope.alerts.length > 5 )
                  $scope.alerts.shift();  // Delete the top message
         };
 
         
-        var config        = JSON.parse( configuration.data.data );  
+        var config        = JSON.parse( configuration.data.data );  // Configuration data that comes from the REST server
         var brokerAddress = config.broker;
         var brokerPort    = parseInt(config.port);
         var topics        = [];
         topics            = config.topics;
 
-            for ( var i = 0 ;  i < topics.length ; i++ )
+        for ( var i = 0 ;  i < topics.length ; i++ )
                 console.log("Topic subscribed: " + topics[i] );        
         
         var client;
         var connectTimeout   = 3; /* secs */
         var reconnectTimeout = 5000; /* msecs */
-        var path             = "/mqtt";
- 
+        var path             = "/";
+        
+        function addText(text) {
+            var obj = document.getElementById("mqtt");
+            var txt = document.createTextNode(text);
+            obj.appendChild(txt);
+        }
+        
         function mqttConnect() {
             var wsID = "phantGraph-mqtt-" + Date.now();
             
@@ -52,19 +57,19 @@ angular.module("phantGraph")
             client.onMessageArrived = onMessageArrived;
             client.connect(options);
             
-            $scope.mqtt = "Connecting to: " + brokerAddress + ":" + config.port + "..." ;
-            //$scope.$apply();
+            $scope.mqtt="";
+            addText("Connecting to: " + brokerAddress + ":" + config.port + "... ") ;
             
         }
         
         function onConnect() {
-            $scope.mqtt = "Connected to MQTT broker via WebSockets transport.";
-            $scope.mqtt = "Subscribing to topics: ";
+            addText( " -> Connected to MQTT broker via WebSockets transport.\n");
+            addText( "Subscribing to topics: \n" );
             for ( var i = 0 ;  i < topics.length ; i++ ) {
                 client.subscribe(topics[i]);
-                $scope.mqtt = "Topic subscribed: " + topics[i];
-                //$scope.$apply();
-            }    
+                addText( "  -> " + topics[i] + "\n");
+            }
+            addText("\nReady!\n");
         }
         
         function onConnectionLost(msg) {
@@ -73,6 +78,7 @@ angular.module("phantGraph")
         }
         
         function onMessageArrived(msg) {
+            // Messages are added to the top due to the scroll bars.
             $scope.mqtt = Math.floor(Date.now() / 1000 ) + ": "
                 + msg.destinationName + " ~> "
                 + msg.payloadString + "\n"
@@ -81,6 +87,7 @@ angular.module("phantGraph")
         }
 
         mqttConnect();
+
 }]);
 
 
