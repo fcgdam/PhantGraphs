@@ -11,7 +11,9 @@ Example:
 
 The graphs will auto update with the most recent data as it arrives to the streams, allowing for live updating of the graphs.
 
-More info here ->  https://primalcortex.wordpress.com/2015/10/15/sparkfun-phant…tream-graphing/
+More info here -> https://primalcortex.wordpress.com/2015/10/15/sparkfun-phant-server-data-stream-graphing/
+
+Please comments and feedback on the above link. Thanks!
 
 # How to use it
 Clone this repository and just put the app folder under the docroot of some web-server changing it's name to phantgraphs for example. Access it by **http://mywebserver/phantgraphs**.
