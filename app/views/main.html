@@ -11,7 +11,7 @@
                 <!-- this is an hack, but it's way simpler this way... -->
                 <div ng-show="graph.charttype == 0" >
                     <canvas id="graph{{graph.rowid}}" class="chart chart-line" chart-data="graph.data" chart-labels="graph.labels" chart-legend="true"
-                      chart-click="onClickGraph" chart-hover="onHover" chart-series="graph.series" chart-options="">
+                      chart-click="onClickGraph" chart-hover="onHover" chart-series="graph.series" chart-options="{animation:false}">
                     </canvas>
                 </div>
                 
