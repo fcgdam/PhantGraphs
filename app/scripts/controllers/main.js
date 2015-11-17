@@ -10,13 +10,13 @@ angular.module('phantGraph')
             $scope.chartjstype = [ 'chart-line', 'chart-bar', 'chart-doughnut', 'chart-radar', 'chart-pie' , 'chart-polar' ];
             
             // Load dashboard configuration:
-            var dashconfig = JSON.parse(configuration.data.data); // It's a Json stringify object inside the db field.
-            var refresh    = dashconfig.refresh;        // True if disable automatic graphs refresh
-            var datapoints = dashconfig.datapoints;     // Number of datapoints for the X axis
-            var refreshp   = dashconfig.refreshp;       // Refresh period in ms.
-            var labelinter = dashconfig.labelinterval;  // No label interval between Xlabels
-            var maxerror   = dashconfig.maxerror;       // Maximum errors before stopping automatic refresh. Click on the graph to resume.
-            var errorthrottle = dashconfig.errorthrottle; // Future use.
+            var dashconfig    = JSON.parse(configuration.data.data); // It's a Json stringify object inside the db field.
+            var refresh       = dashconfig.refresh;        // True if disable automatic graphs refresh
+            var datapoints    = dashconfig.datapoints;     // Number of datapoints for the X axis
+            var refreshp      = dashconfig.refreshp;       // Refresh period in ms.
+            var labelinter    = dashconfig.labelinterval;  // No label interval between Xlabels
+            var maxerror      = dashconfig.maxerror;       // Maximum errors before stopping automatic refresh. Click on the graph to resume.
+            var errorthrottle = dashconfig.errorthrottle;  // Future use.
             
             // Make sure that refreshp has a sane value....
             if ( refreshp < 1000 ) refreshp = 1000;
@@ -208,9 +208,10 @@ angular.module('phantGraph')
                         $scope.series = $scope.graphsList[graphID].series;
                         $scope.labels = $scope.graphsList[graphID].labels;
                         
-                        console.log("Series: " + $scope.series );
-                        console.log("Data  : " + data );
-                        console.log("Labels: " + $scope.graphsList[graphID].labels );
+                        // For debugging. Enable to see data at the JS browser console.
+                        //console.log("Series: " + $scope.series );
+                        //console.log("Data  : " + data );
+                        //console.log("Labels: " + $scope.graphsList[graphID].labels );
                         
                         // For the demo graph.
                         //$scope.data = data;
@@ -401,6 +402,8 @@ angular.module('phantGraph')
                         options[opt] == "2" ? $scope.graphsList[i].xlabels = true : $scope.graphsList[i].xlabels = false;
                         
                         options[opt] == "3" ? $scope.graphsList[i].noseries = true : $scope.graphsList[i].noseries = false;
+                        
+                        options[opt] == "4" ? $scope.graphsList[i].wide = true : $scope.graphsList[i].wide = false;
   
                     }
                 }
