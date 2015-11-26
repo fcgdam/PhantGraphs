@@ -19,21 +19,66 @@ angular.module('phantGraph')
                     type: "warning",
                     msg: error
                 });
-            };            
+            };       
             
+            function printArray( arr ) {
+                for (var  i = 0 ; i < arr.length ; i++ ) {
+                    console.log("[" + i +"]= " + arr[i].rowid );
+                }
+            }
+            
+            function findByRowId(source, id) {
+                for (var i = 0; i < source.length; i++) {
+                    if (source[i].rowid === id) {
+                        return source[i];
+                    }
+                }
+                throw "Couldn't find object with id: " + id;
+            }
+            
+            // Based on the Stream ID gets the server id. This is needed because the ID might not match the array position
+            function getStreamServer( streamID ) {
+                var server = findByRowId($scope.streamsList , streamID );
+                return server.serverid;
+             }    
+                    
+            // Obtains the server url for the specified stream ID        
+            function getStreamURL( streamID ) {
+                var serverID = getStreamServer ( streamID );
+                var server   = findByRowId($scope.serversList , serverID );
+                return server.url;
+             }            
+            
+             function getStreamKey( streamID ) {
+                var stream = findByRowId($scope.streamsList , streamID );
+                return stream.key;
+             }              
+            
+            function aPos( source , id ) {
+                for (var i = 0; i < source.length; i++) {
+                    if (source[i].rowid === id) {
+                        return i;
+                    }
+                }
+                throw "Couldn't find object with id: " + id;                
+            }
             
             // For each stream, query the server for the stream fields.
             function getStreamFields( streamID ) {
+                var arrP;   // Variable to hold array position correspoding to streamID data.
+
                 try {
-                    phantApiServices.streamInfo( $scope.serversList[$scope.streamsList[streamID].serverid-1].url, $scope.streamsList[streamID].key )
+                   
+                    phantApiServices.streamInfo( getStreamURL(streamID), getStreamKey(streamID) )
                         .then ( function ( result ) {
                             
-                            $scope.streamsList[streamID].fields=[];
+                            arrP = aPos( $scope.streamsList , streamID );
+                            $scope.streamsList[arrP].fields=[];
                             $scope.streamListFields = [];
                             angular.forEach( result.data[0] , function ( value , key ) // yes, its first value and then key 
                             {
                                     //console.log("Key: " + key +"  Value: " + value );
-                                    $scope.streamsList[streamID].fields.push(key);
+                                    $scope.streamsList[arrP].fields.push(key);
                                     $scope.streamListFields.push(key);
                                 
                             });
@@ -41,9 +86,9 @@ angular.module('phantGraph')
                         },
                             function ( result ) {
                                 console.log("Error.....");
-                                $scope.streamsList[streamID].fields=[];
+                                $scope.streamsList[arrP].fields=[];
                                 $scope.streamListFields = [];
-                                pushError("Can't get fields for " + $scope.streamsList[streamID].name);
+                                pushError("Can't get fields for " + $scope.streamsList[arrP].name);
                             }
                         );
                 } catch ( err ) {
@@ -55,7 +100,8 @@ angular.module('phantGraph')
             
             function updateFields(graph) {
                 $scope.streamListFields = [];
-                getStreamFields(graph.selectedStream.rowid-1); // Rowid's start at 1, but arrays start at zero...   
+                var arrP = aPos( $scope.streamsList , graph.selectedStream.rowid); // get Array index position
+                getStreamFields(graph.selectedStream.rowid);    
             }
             
             function initCreateForm() {
@@ -72,7 +118,9 @@ angular.module('phantGraph')
             
             function createGraph(graph) {
                 graph.streamid = graph.selectedStream.rowid;
-                graph.serverid = $scope.streamsList[graph.streamid-1].serverid-1;
+                console.log("Stream ID: " + graph.streamid );
+                var arrP = aPos( $scope.streamsList , graph.streamid ); // get Array index position
+                graph.serverid = $scope.streamsList[arrP].serverid-1;
                 graph.charttype = $scope.charttypedesc.indexOf(graph.charttypedesc);
                 
                 
@@ -102,7 +150,8 @@ angular.module('phantGraph')
                 //console.log("Name:" + server.name );
                 $scope.editedGraph = angular.copy(graph);
                 $scope.editedGraph.charttypedesc = $scope.charttypedesc[$scope.editedGraph.charttype];
-                $scope.editedGraph.selectedStream =$scope.streamsList[$scope.editedGraph.streamid-1];
+                var arrP = aPos( $scope.streamsList , $scope.editedGraph.streamid);
+                $scope.editedGraph.selectedStream =$scope.streamsList[arrP];
                 updateFields($scope.editedGraph);
                 
                 $scope.isEditing = true;               
