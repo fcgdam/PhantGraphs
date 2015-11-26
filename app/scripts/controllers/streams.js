@@ -49,9 +49,6 @@ angular.module('phantGraph')
                 
                 $scope.streamsList[streamID].servername = getServerName($scope.serversList , $scope.streamsList[streamID].serverid );
                 
-                
-                console.log("Server id: " + $scope.streamsList[streamID].serverid );
-                
                 try {
                     phantApiServices.streamInfo( PhantURL , PhantKey )
                         .then ( function ( result ) {
@@ -67,7 +64,6 @@ angular.module('phantGraph')
                         
                         },
                             function ( result ) {
-                                console.log("Error.....");
                                 $scope.streamsList[streamID].fields=[];
 
                                 pushError("Can't get fields for " + $scope.streamsList[streamID].name);
@@ -80,8 +76,6 @@ angular.module('phantGraph')
             function displayStreamFields() {
                 // Fill Stream fields async
                 for ( var i = 0 ; i < $scope.streamsList.length ; i++ ) {
-                    //console.log(i);
-                    console.log("Stream Name:" + $scope.streamsList[i].name);
                     getStreamFields( i );
                 }
             }
@@ -89,7 +83,6 @@ angular.module('phantGraph')
             function getPhantStreams() {
                 phantStreamsServices.all()
                     .then( function ( result ) {
-                        console.log("----------------------");
                         $scope.streamsList = result.data;
                         displayStreamFields();
                     });
@@ -121,7 +114,7 @@ angular.module('phantGraph')
                 //console.log("Editing....");
                 //console.log("Name:" + server.name );
                 $scope.editedStream = angular.copy(stream);
-                console.log("Server id: " +  getServerIndex( $scope.serversList, $scope.editedStream.serverid ) );
+
                 var serverId = getServerIndex( $scope.serversList, $scope.editedStream.serverid ) ; 
                 $scope.editedStream.selectedServer = $scope.serversList[serverId] ;
                 $scope.isEditing = true;               
