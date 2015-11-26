@@ -19,10 +19,41 @@ angular.module('phantGraph')
                 });
             };
             
+            function getServerURL( servers , id ) {
+                for ( var i = 0 ; i < servers.length ; i++ ) {
+                        if ( servers[i].rowid == id ) 
+                            return servers[i].url;
+                }
+                
+            }
+            
+            function getServerName( servers , id ) {
+                for ( var i = 0 ; i < servers.length ; i++ ) {
+                        if ( servers[i].rowid == id ) 
+                            return servers[i].name;
+                }
+                
+            }
+            
+            function getServerIndex( servers, id ) {
+                for ( var i = 0 ; i < servers.length ; i++ ) {
+                        if ( servers[i].rowid == id ) 
+                            return i;
+                }               
+            }
+            
             // For each stream, query the server for the stream fields.
             function getStreamFields( streamID ) {
+                var PhantURL = getServerURL($scope.serversList , $scope.streamsList[streamID].serverid );
+                var PhantKey = $scope.streamsList[streamID].key;
+                
+                $scope.streamsList[streamID].servername = getServerName($scope.serversList , $scope.streamsList[streamID].serverid );
+                
+                
+                console.log("Server id: " + $scope.streamsList[streamID].serverid );
+                
                 try {
-                    phantApiServices.streamInfo( $scope.serversList[$scope.streamsList[streamID].serverid-1].url, $scope.streamsList[streamID].key )
+                    phantApiServices.streamInfo( PhantURL , PhantKey )
                         .then ( function ( result ) {
                             //console.log("getStreamFields SUCCESS: ");
                             $scope.streamsList[streamID].fields=[];
@@ -49,6 +80,8 @@ angular.module('phantGraph')
             function displayStreamFields() {
                 // Fill Stream fields async
                 for ( var i = 0 ; i < $scope.streamsList.length ; i++ ) {
+                    //console.log(i);
+                    console.log("Stream Name:" + $scope.streamsList[i].name);
                     getStreamFields( i );
                 }
             }
@@ -56,10 +89,9 @@ angular.module('phantGraph')
             function getPhantStreams() {
                 phantStreamsServices.all()
                     .then( function ( result ) {
+                        console.log("----------------------");
                         $scope.streamsList = result.data;
-                        //console.log( result.data );
-                        if ($scope.refreshFields == true) 
-                            displayStreamFields();
+                        displayStreamFields();
                     });
             };
                  
@@ -68,7 +100,6 @@ angular.module('phantGraph')
                     .then(function (result) {
                         initCreateForm();
                         getPhantStreams();
-                        displayStreamFields();
                     });
             }
 
@@ -82,15 +113,17 @@ angular.module('phantGraph')
                     .then(function (result) {
                         cancelEditing();
                         getPhantStreams();
-                        displayStreamFields();
+                        
                 });
             }
 
-            function setEditedStream(stream) {
+            function setEditedStream( stream ) {
                 //console.log("Editing....");
                 //console.log("Name:" + server.name );
                 $scope.editedStream = angular.copy(stream);
-                $scope.editedStream.selectedServer = $scope.serversList[$scope.editedStream.serverid-1];
+                console.log("Server id: " +  getServerIndex( $scope.serversList, $scope.editedStream.serverid ) );
+                var serverId = getServerIndex( $scope.serversList, $scope.editedStream.serverid ) ; 
+                $scope.editedStream.selectedServer = $scope.serversList[serverId] ;
                 $scope.isEditing = true;               
             }
             
@@ -108,8 +141,6 @@ angular.module('phantGraph')
                     .then( function (result) {
                         cancelEditing();
                         getPhantStreams(); 
-                        $scope.refreshFields = true;
-                        //displayStreamFields();
                     });
                 
             }
@@ -130,10 +161,8 @@ angular.module('phantGraph')
             $scope.isCurrentItem = isCurrentItem;
             $scope.editedStream = null;
             $scope.isEditing = false;
-            $scope.refreshFields = false;   // Used after editing a stream.
   
             displayStreamFields();
-            //createStream();
             
         }] );
         

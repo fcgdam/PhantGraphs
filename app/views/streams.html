@@ -14,7 +14,7 @@
                     <button type="button" class="close" ng-click="deleteStream(stream.rowid)">&times;</button>
                     <b>Stream name: </b>{{stream.name}}<br></br>
                     <b>Stream key : </b>{{stream.key}} <br></br>
-                    <b>Server ID  : </b>{{serversList[stream.serverid-1].name}} <br></br>
+                    <b>Server ID  : </b>{{stream.servername}} <br></br>
                     <span><b>Stream Fields: </b>
                         <div style="display:inline-block;" ng-repeat="field in stream.fields track by $index">{{field}}&nbsp;</div>
                     </span>
