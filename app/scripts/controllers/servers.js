@@ -1,5 +1,7 @@
 'use strict';
 
+// The Servers List doesn't have any problem with no sequence rowids.
+
 angular.module('phantGraph')
 	.controller('ServersCtrl',["$scope","phantservers","phantServerServices", function($scope,phantservers,phantServerServices) {
             var servers = this;
@@ -26,7 +28,6 @@ angular.module('phantGraph')
             };
                  
             function createServer(server) {
-                //console.log("Creating server via REST...");
                 phantServerServices.create(server)
                     .then(function (result) {
                         initCreateForm();
@@ -39,7 +40,6 @@ angular.module('phantGraph')
             }
 
             function deleteServer(serverID) {
-                //console.log("Deleting server via REST...");
                 phantServerServices.destroy(serverID)
                     .then(function (result) {
                         cancelEditing();
