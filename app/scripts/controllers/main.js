@@ -409,15 +409,56 @@ angular.module('phantGraph')
                 }
             }
             
+            function getServerURL( servers , id ) {
+                for ( var i = 0 ; i < servers.length ; i++ ) {
+                        if ( servers[i].rowid == id ) 
+                            return servers[i].url;
+                }
+                
+            }            
+            
+            
+            // Based on the Stream ID gets the server id for that stream.
+            // This is needed because the ID might not match the array position returned
+            // by the REST API data.
+            function getStreamURL( streamid ) {
+                var streams =  $scope.streamsList;
+                var servers =  $scope.serversList;
+                
+                // Find the stream to get the serverid
+                for ( var i = 0 ; i < streams.length ; i++) {
+                        if ( streams[i].rowid === streamid ) 
+                            return getServerURL( servers , streams[i].serverid );
+                   
+                }
+        
+            }
+
+            function getStreamKey( streamid ) {
+                var streams =  $scope.streamsList;
+                var servers =  $scope.serversList;
+                
+                // Find the stream to get the serverid
+                for ( var i = 0 ; i < streams.length ; i++) {
+                        if ( streams[i].rowid === streamid ) 
+                            return streams[i].key;
+                   
+                }
+        
+            }            
+            
+
             function updateALL() {
                 // Let's update the data for all graphs that are defined.
                 for (var i = 0 ; i < $scope.graphsList.length ; i++) {
                     $scope.graphsList[i].isLoading = true;
                     $scope.graphsList[i].isRefreshing = true;
                     $scope.graphsList[i].errorCount = 0;
-                    //console.log($scope.graphsList[i].options );
                     
-                    getGraphData( i ,  $scope.serversList[$scope.graphsList[i].serverid].url ,  $scope.streamsList[$scope.graphsList[i].streamid-1].key );
+                    var URL = getStreamURL( $scope.graphsList[i].streamid );
+                    var Key = getStreamKey( $scope.graphsList[i].streamid );
+                    
+                    getGraphData( i ,  URL ,  Key );
                 
                 }
             }
@@ -434,7 +475,10 @@ angular.module('phantGraph')
                         // We only refresh the stream data if no other refresh is running.
                         // This is to avoid nested calls to the ws.
                         $scope.graphsList[i].isRefreshing = true ;
-                        getLastGraphData( i ,  $scope.serversList[$scope.graphsList[i].serverid].url ,  $scope.streamsList[$scope.graphsList[i].streamid-1].key );
+                        var URL = getStreamURL( $scope.graphsList[i].streamid );
+                        var Key = getStreamKey( $scope.graphsList[i].streamid );
+                        
+                        getLastGraphData( i , URL ,  Key );
                     }
                 }
             }           

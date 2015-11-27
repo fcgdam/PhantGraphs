@@ -21,6 +21,7 @@ angular.module('phantGraph')
                 });
             };       
             
+            // For debugging
             function printArray( arr ) {
                 for (var  i = 0 ; i < arr.length ; i++ ) {
                     console.log("[" + i +"]= " + arr[i].rowid );
@@ -36,11 +37,20 @@ angular.module('phantGraph')
                 throw "Couldn't find object with id: " + id;
             }
             
-            // Based on the Stream ID gets the server id. This is needed because the ID might not match the array position
+            // Based on the Stream ID gets the server id. This is needed because the server ID on the database
+            // might not match the array position
             function getStreamServer( streamID ) {
                 var server = findByRowId($scope.streamsList , streamID );
                 return server.serverid;
              }    
+             
+            function getServerName( servers , id ) {
+                for ( var i = 0 ; i < servers.length ; i++ ) {
+                        if ( servers[i].rowid == id ) 
+                            return servers[i].name;
+                }
+                
+            }
                     
             // Obtains the server url for the specified stream ID        
             function getStreamURL( streamID ) {
@@ -52,8 +62,17 @@ angular.module('phantGraph')
              function getStreamKey( streamID ) {
                 var stream = findByRowId($scope.streamsList , streamID );
                 return stream.key;
-             }              
-            
+             }         
+             
+             function getStreamName( streams , id ) {
+                for ( var i = 0 ; i < streams.length ; i++ ) {
+                        if ( streams[i].rowid == id ) 
+                            return streams[i].name;
+                }
+                
+             }
+                                 
+
             function aPos( source , id ) {
                 for (var i = 0; i < source.length; i++) {
                     if (source[i].rowid === id) {
@@ -62,6 +81,16 @@ angular.module('phantGraph')
                 }
                 throw "Couldn't find object with id: " + id;                
             }
+            
+            // Gets the Server Name and Stream name for displaying from the serverid and streamid.
+            function setGraphData() {
+                for ( var i = 0 ; i < $scope.graphsList.length ; i++ ) {
+                    console.log("Server ID: " + $scope.graphsList[i].serverid );
+                    $scope.graphsList[i].servername = getServerName( $scope.serversList , $scope.graphsList[i].serverid );
+                    $scope.graphsList[i].streamname = getStreamName( $scope.streamsList , $scope.graphsList[i].streamid );
+                }             
+            }            
+            
             
             // For each stream, query the server for the stream fields.
             function getStreamFields( streamID ) {
@@ -112,6 +141,7 @@ angular.module('phantGraph')
                 phantGraphsServices.all()
                     .then( function ( result ) {
                         $scope.graphsList = result.data;
+                        setGraphData();
                         //console.log( result.data );
                     });
             };            
@@ -120,7 +150,7 @@ angular.module('phantGraph')
                 graph.streamid = graph.selectedStream.rowid;
                 console.log("Stream ID: " + graph.streamid );
                 var arrP = aPos( $scope.streamsList , graph.streamid ); // get Array index position
-                graph.serverid = $scope.streamsList[arrP].serverid-1;
+                graph.serverid = $scope.streamsList[arrP].serverid;
                 graph.charttype = $scope.charttypedesc.indexOf(graph.charttypedesc);
                 
                 
@@ -182,18 +212,22 @@ angular.module('phantGraph')
                     });
                 
             }            
-
+            
+           
+            
             initCreateForm();
             
             $scope.updateFields = updateFields;
             $scope.streamListFields = [];
             $scope.newGraph.charttypedesc = $scope.charttypedesc[0];
             
-            $scope.createGraph = createGraph;
-            $scope.deleteGraph = deleteGraph;
+            $scope.createGraph    = createGraph;
+            $scope.deleteGraph    = deleteGraph;
             $scope.setEditedGraph = setEditedGraph;
             $scope.cancelEditing  = cancelEditing;
-            $scope.updateGraph = updateGraph;
+            $scope.updateGraph    = updateGraph;
+            
+            setGraphData();  // Fills up the Server name and Stream name for display
             
         }]);
 

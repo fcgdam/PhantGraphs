@@ -13,8 +13,8 @@
                     <button type="button" class="close" ng-click="deleteGraph(graph.rowid)">&times;</button>
                     <b>Graph name: </b>{{graph.name}} [{{graph.graphorder}}]<br></br>
                     <b>Graph type: </b>{{charttypedesc[graph.charttype]}}<br></br>
-                    <b>Graph Server : </b>{{serversList[graph.serverid].name}} <br></br>
-                    <b>Graph Stream : </b>{{streamsList[graph.streamid-1].name}} <br></br>
+                    <b>Graph Server : </b>{{graph.servername}} <br></br>
+                    <b>Graph Stream : </b>{{graph.streamname}} <br></br>
                     <b>Graph Fields : </b>{{graph.fields}}<br></br>
                     <b>Graph Options: </b>{{graph.options}}
                 </div>
