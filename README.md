@@ -1,5 +1,5 @@
 # PhantGraphs
-This is an AngularJS SPA (Single Page Application) for retriving and graphing Sparkfun Phant data that is stored in data streams.
+This is an AngularJS SPA (Single Page Application) for retrieving and graphing stored data that is available on Sparkfun Phant server data streams.
 It also implements a simple (for now) front-end for IoT device provisioning and a MQTT monitor.
 
 PhantGraphs allows to create a simple Dashboard for graphing data stored in Phant server data streams and show the data in graphs that can be configured in type fields shown.
