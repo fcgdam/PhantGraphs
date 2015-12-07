@@ -457,6 +457,8 @@ angular.module('phantGraph')
                     
                     var URL = getStreamURL( $scope.graphsList[i].streamid );
                     var Key = getStreamKey( $scope.graphsList[i].streamid );
+
+		    $scope.graphsList[i].url= URL + "/streams/" + Key;
                     
                     getGraphData( i ,  URL ,  Key );
                 
